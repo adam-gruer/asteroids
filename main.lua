@@ -21,10 +21,16 @@ function love.load()
     spaceship.velX = 0
     spaceship.velY = 0
 
+    spaceship.engineSound = love.audio.newSource("assets/audio/boost.ogg", "static")
+    spaceship.engineSound:setVolume(.5)
+    spaceship.engineSound:setLooping(true)
+
     ambientMusic = love.audio.newSource("assets/audio/twilight.ogg", "stream" )
     ambientMusic:setLooping(true)
     ambientMusic:setVolume(.25)
     love.audio.play(ambientMusic)
+
+    
 
 end
 
@@ -68,12 +74,22 @@ function love.update(dt)
         spaceship.velX = spaceship.velX + math.sin(spaceship.direction) * spaceship.acceleration * dt
         spaceship.velY = spaceship.velY + math.cos(spaceship.direction) * -spaceship.acceleration * dt
 
+       -- if spaceship.engineSound:isStopped() then
+            love.audio.play(spaceship.engineSound)
+        --end
+
         if spaceship.useImage == "boost1" then
             spaceship.useImage = "boost2"
         else
             spaceship.useImage = "boost1"
         end
+
     else
+ 
+       -- if not spaceship.engineSound:isStopped() then
+            love.audio.stop(spaceship.engineSound)
+        --end
+
         spaceship.useImage = "coasting"
     end
 end
