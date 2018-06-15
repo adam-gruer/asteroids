@@ -21,6 +21,11 @@ function love.load()
     spaceship.velX = 0
     spaceship.velY = 0
 
+    ambientMusic = love.audio.newSource("assets/audio/twilight.ogg", "stream" )
+    ambientMusic:setLooping(true)
+    ambientMusic:setVolume(.25)
+    love.audio.play(ambientMusic)
+
 end
 
 function love.draw()
