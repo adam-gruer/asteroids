@@ -30,6 +30,70 @@ function love.load()
     ambientMusic:setVolume(.25)
     love.audio.play(ambientMusic)
 
+    function moveObject(spaceObject, dt, marginWidth, width, height)
+        --move an object according to its velX and velY
+
+        --if the object reaches 'borderWidth' past the edge of the screen, wrap it
+        returnVal = false
+        --move the object
+        spaceObject.posX = spaceObject.posX + spaceObject.velX * dt
+        spaceObject.posY = spaceObject.posY + spaceObject.velY * dt
+
+        if spaceObject.posX > width + marginWidth then
+            spaceObject.posX = -marginWidth
+            returnVal = true
+        elseif spaceObject.posX < -marginWidth then
+            spaceObject.posX = width + marginWidth
+            returnVal = true
+        end
+    
+        if spaceObject.posY > height + marginWidth then
+            spaceObject.posY = -marginWidth
+            returnVal = true
+        elseif spaceObject.posY < -marginWidth then
+            spaceObject.posY = height + marginWidth
+            returnVal = true
+        end
+
+        return returnVal
+
+    end
+
+    function controlSpaceship(dt)
+        if love.keyboard.isDown("a") then
+            spaceship.direction = spaceship.direction - spaceship.turnspeed * dt
+        end
+        
+        if love.keyboard.isDown("d") then
+            spaceship.direction = spaceship.direction + spaceship.turnspeed * dt
+        end
+    
+        if love.keyboard.isDown("space") then
+    
+            spaceship.velX = spaceship.velX + math.sin(spaceship.direction) * spaceship.acceleration * dt
+            spaceship.velY = spaceship.velY + math.cos(spaceship.direction) * -spaceship.acceleration * dt
+    
+           -- if spaceship.engineSound:isStopped() then
+                love.audio.play(spaceship.engineSound)
+            --end
+    
+            if spaceship.useImage == "boost1" then
+                spaceship.useImage = "boost2"
+            else
+                spaceship.useImage = "boost1"
+            end
+    
+        else
+     
+           -- if not spaceship.engineSound:isStopped() then
+                love.audio.stop(spaceship.engineSound)
+            --end
+    
+            spaceship.useImage = "coasting"
+        end
+    end
+
+
     
 
 end
@@ -44,52 +108,6 @@ function love.draw()
 end
 
 function love.update(dt)
-    spaceship.posX = spaceship.posX + spaceship.velX * dt
-    spaceship.posY = spaceship.posY + spaceship.velY * dt
-
-
-    if spaceship.posX > width + 75 then
-        spaceship.posX = -75
-    elseif spaceship.posX < -75 then
-        spaceship.posX = width + 75
-    end
-
-    if spaceship.posY > height + 75 then
-        spaceship.posY = -75
-    elseif spaceship.posY < -75 then
-        spaceship.posY = height + 75
-    end
-
-
-    if love.keyboard.isDown("a") then
-        spaceship.direction = spaceship.direction - spaceship.turnspeed * dt
-    end
-    
-    if love.keyboard.isDown("d") then
-        spaceship.direction = spaceship.direction + spaceship.turnspeed * dt
-    end
-
-    if love.keyboard.isDown("space") then
-
-        spaceship.velX = spaceship.velX + math.sin(spaceship.direction) * spaceship.acceleration * dt
-        spaceship.velY = spaceship.velY + math.cos(spaceship.direction) * -spaceship.acceleration * dt
-
-       -- if spaceship.engineSound:isStopped() then
-            love.audio.play(spaceship.engineSound)
-        --end
-
-        if spaceship.useImage == "boost1" then
-            spaceship.useImage = "boost2"
-        else
-            spaceship.useImage = "boost1"
-        end
-
-    else
- 
-       -- if not spaceship.engineSound:isStopped() then
-            love.audio.stop(spaceship.engineSound)
-        --end
-
-        spaceship.useImage = "coasting"
-    end
+    moveObject(spaceship, dt, 45, width, height)
+    controlSpaceship(dt)
 end
