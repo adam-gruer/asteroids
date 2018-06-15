@@ -32,9 +32,9 @@ function love.draw()
                         1,1,21,36)
 end
 
-function love.update()
-    spaceship.posX = spaceship.posX + spaceship.velX
-    spaceship.posY = spaceship.posY + spaceship.velY
+function love.update(dt)
+    spaceship.posX = spaceship.posX + spaceship.velX * dt
+    spaceship.posY = spaceship.posY + spaceship.velY * dt
 
 
     if spaceship.posX > width + 75 then
@@ -51,17 +51,17 @@ function love.update()
 
 
     if love.keyboard.isDown("a") then
-        spaceship.direction = spaceship.direction - spaceship.turnspeed
+        spaceship.direction = spaceship.direction - spaceship.turnspeed * dt
     end
     
     if love.keyboard.isDown("d") then
-        spaceship.direction = spaceship.direction + spaceship.turnspeed
+        spaceship.direction = spaceship.direction + spaceship.turnspeed * dt
     end
 
     if love.keyboard.isDown("space") then
 
-        spaceship.velX = spaceship.velX + math.sin(spaceship.direction) * spaceship.acceleration
-        spaceship.velY = spaceship.velY + math.cos(spaceship.direction) * -spaceship.acceleration
+        spaceship.velX = spaceship.velX + math.sin(spaceship.direction) * spaceship.acceleration * dt
+        spaceship.velY = spaceship.velY + math.cos(spaceship.direction) * -spaceship.acceleration * dt
 
         if spaceship.useImage == "boost1" then
             spaceship.useImage = "boost2"
