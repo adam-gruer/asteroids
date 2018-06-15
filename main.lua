@@ -1,4 +1,5 @@
 spaceship = {}
+satellite = {}
 
 function love.load()
     
@@ -24,6 +25,25 @@ function love.load()
     spaceship.engineSound = love.audio.newSource("assets/audio/boost.ogg", "static")
     spaceship.engineSound:setVolume(.5)
     spaceship.engineSound:setLooping(true)
+
+    satellite.image = love.graphics.newImage("assets/img/satellite.png")
+    satellite.posX = -150
+    satellite.posY = 15
+    satellite.velX = 25
+    satellite.velY = 15
+    satellite.sound = love.audio.newSource("assets/audio/beep.ogg", "static")
+    satellite.sound:setVolume(1)
+    satellite.sound:setLooping(true)
+
+    love.audio.setPosition(width/2, height/2, 0)
+    love.audio.setDistanceModel("exponent")
+    
+
+    satellite.sound:setPosition(satellite.posX, satellite.posY, 0)
+
+ 
+    satellite.sound:play()
+
 
     ambientMusic = love.audio.newSource("assets/audio/twilight.ogg", "stream" )
     ambientMusic:setLooping(true)
@@ -105,9 +125,19 @@ function love.draw()
                         spaceship.posY,
                         spaceship.direction,
                         1,1,21,36)
+    
+    love.graphics.draw(satellite.image ,
+    satellite.posX,
+    satellite.posY,
+    0,
+    1,1,96,71)
 end
 
 function love.update(dt)
     moveObject(spaceship, dt, 45, width, height)
     controlSpaceship(dt)
+
+    moveObject(satellite, dt, 500, width, height)
+    satellite.sound:setPosition(satellite.posX, satellite. posY, 0)
+
 end
