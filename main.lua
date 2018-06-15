@@ -6,9 +6,9 @@ function love.load()
     width = love.graphics.getWidth()
     height = love.graphics.getHeight()
 
-    spaceship.coasting  = love.graphics.newImage("spaceship00.png")
-    spaceship.boost1 = love.graphics.newImage("spaceship01.png")
-    spaceship.boost2 = love.graphics.newImage("spaceship02.png")
+    spaceship.coasting  = love.graphics.newImage("assets/img/spaceship00.png")
+    spaceship.boost1 = love.graphics.newImage("assets/img/spaceship01.png")
+    spaceship.boost2 = love.graphics.newImage("assets/img/spaceship02.png")
     spaceship.useImage = "coasting"
 
     spaceship.posX = width/2
